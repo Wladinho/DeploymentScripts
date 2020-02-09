@@ -1,4 +1,16 @@
-﻿    [CmdletBinding()]
+﻿<#
+.Synopsis
+    Parameterized script for installing new AD DS forest.
+     
+.DESCRIPTION
+    Custom script with parameters for installing new AD DS forest.
+    Script will install all needed prerequisites, before promote destination server to Domain Controller. 
+
+.EXAMPLE
+    InstallNewADForest.ps1 -DomainName <> -DomainNetBiosName <> -DSRMPassword <>
+#>
+
+    [CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)][string]$DomainName,
     [Parameter(Mandatory=$true)][string]$DomainNetBiosName,
@@ -12,10 +24,10 @@ Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManageme
 $DomainParameters = @{
 
     DomainName                    = $DomainName
-    CreateDnsDelegation           = $false
-    ForestMode                    = "WinThreshold"
     DomainNetbiosName             = $DomainNetBiosName
+    ForestMode                    = "WinThreshold"    
     InstallDns                    = $true
+    CreateDnsDelegation           = $false
     DatabasePath                  = "C:\Windows\NTDS"
     LogPath                       = "C:\Windows\NTDS"
     SysvolPath                    = "C:\Windows\SYSVOL"
