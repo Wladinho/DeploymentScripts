@@ -104,7 +104,7 @@
                     "connectionStrings": [
                         {
                             "name": "WebApplicationDemoContext",
-                            "connectionString": "Server=tcp:meetupnishlive.database.windows.net,1433;Initial Catalog=SampleDatabase;Persist Security Info=False;User ID=vladimir;Password=Pa$$w0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+                            "connectionString": "Server=tcp:meetupnishlive.database.windows.net,1433;Initial Catalog=SampleDatabase;Persist Security Info=False;User ID=vladimir;Password=Pa$$w0rd1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
                             "type": "SQLAzure"
                         }
                     ]
@@ -126,7 +126,7 @@
                     "connectionStrings": [
                         {
                             "name": "WebApplicationDemoContext",
-                            "connectionString": "Server=tcp:meetupnishlive.database.windows.net,1433;Initial Catalog=SampleDatabase;Persist Security Info=False;User ID=vladimir;Password=Pa$$w0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+                            "connectionString": "Server=tcp:meetupnishlive.database.windows.net,1433;Initial Catalog=SampleDatabase;Persist Security Info=False;User ID=vladimir;Password=Pa$$w0rd1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
                             "type": "SQLAzure"
                         }
                     ]
