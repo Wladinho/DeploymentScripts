@@ -1,0 +1,167 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.1",
+  "parameters": {
+    "primarySqlServerName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the primary SQL Logical Server. The name must be unique."
+      }
+    },
+    "secondarySqlServerName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the secondary SQL Logical Server. The name must be unique."
+      }
+    },
+    "sqlServerAdminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "The administrator username of the SQL Logical Servers."
+      }
+    },
+    "sqlServerAdminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The administrator password of the SQL Logical Servers."
+      }
+    },
+    "primarySqlServerRegion": {
+      "type": "string",
+      "allowedValues": [
+        "northeurope",
+        "westeurope",
+        "eastus",
+        "westus"
+      ],
+      "metadata": {
+        "description": "The location of the primary SQL Logical Server."
+      }
+    },
+    "secondarySqlServerRegion": {
+      "type": "string",
+      "allowedValues": [
+        "northeurope",
+        "westeurope",
+        "eastus",
+        "westus"
+      ],
+      "metadata": {
+        "description": "The location of the secondary SQL Logical Server."
+      }
+    },
+    "sqlFailoverGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the SQL failover group. The name must be unique."
+      }
+    },
+    "allowAzureIps": {
+      "type": "bool"
+    }
+  },
+  "variables": {
+    "sqlDatabaseName": "SampleDatabase",
+    "sqlDatabaseServiceObjective": "Basic",
+    "sqlDatabaseEdition": "Basic"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Sql/servers",
+      "kind": "v12.0",
+      "name": "[parameters('primarySqlServerName')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[parameters('primarySqlServerRegion')]",
+      "properties": {
+        "administratorLogin": "[parameters('sqlServerAdminUsername')]",
+        "administratorLoginPassword": "[parameters('sqlServerAdminPassword')]",
+        "version": "12.0"
+      },
+      "resources": [
+        {
+            "condition": "[parameters('allowAzureIps')]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Sql/servers/', parameters('primarySqlServerName'))]"
+            ],
+            "location": "[parameters('primarySqlServerRegion')]",
+            "name": "AllowAllWindowsAzureIps",
+            "properties": {
+                "endIpAddress": "0.0.0.0",
+                "startIpAddress": "0.0.0.0"
+            },
+            "type": "firewallrules"
+        },
+        {
+          "apiVersion": "2015-05-01-preview",
+          "type": "failoverGroups",
+          "name": "[parameters('sqlFailoverGroupName')]",
+          "properties": {
+            "serverName": "[parameters('primarySqlServerName')]",
+            "partnerServers": [
+              {
+                "id": "[resourceId('Microsoft.Sql/servers/', parameters('secondarySqlServerName'))]"
+              }
+            ],
+            "readWriteEndpoint": {
+              "failoverPolicy": "Automatic",
+              "failoverWithDataLossGracePeriodMinutes": 60
+            },
+            "readOnlyEndpoint": {
+              "failoverPolicy": "Disabled"
+            },
+            "databases": [
+              "[resourceId('Microsoft.Sql/servers/databases', parameters('primarySqlServerName'), variables('sqlDatabaseName'))]"
+            ]
+          },
+          "dependsOn": [
+            "[parameters('primarySqlServerName')]",
+            "[resourceId('Microsoft.Sql/servers/databases', parameters('primarySqlServerName'), variables('sqlDatabaseName'))]",
+            "[resourceId('Microsoft.Sql/servers', parameters('secondarySqlServerName'))]"
+          ]
+        },
+        {
+          "name": "[variables('sqlDatabaseName')]",
+          "type": "databases",
+          "apiVersion": "2017-10-01-preview",
+          "location": "[parameters('primarySqlServerRegion')]",
+          "dependsOn": [
+            "[parameters('primarySqlServerName')]"
+          ],
+          "properties": {
+            "edition": "[variables('sqlDatabaseEdition')]",
+            "requestedServiceObjectiveName": "[variables('sqlDatabaseServiceObjective')]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Sql/servers",
+      "kind": "v12.0",
+      "name": "[parameters('secondarySqlServerName')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[parameters('secondarySqlServerRegion')]",
+      "properties": {
+        "administratorLogin": "[parameters('sqlServerAdminUsername')]",
+        "administratorLoginPassword": "[parameters('sqlServerAdminPassword')]",
+        "version": "12.0"
+      },
+      "resources": [
+        {
+            "condition": "[parameters('allowAzureIps')]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Sql/servers/', parameters('secondarySqlServerName'))]"
+            ],
+            "location": "[parameters('secondarySqlServerRegion')]",
+            "name": "AllowAllWindowsAzureIps",
+            "properties": {
+                "endIpAddress": "0.0.0.0",
+                "startIpAddress": "0.0.0.0"
+            },
+            "type": "firewallrules"
+        }
+      ]
+    }
+  ]
+}
