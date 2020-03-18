@@ -13,7 +13,6 @@
     [CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)][string]$DomainName,
-    [Parameter(Mandatory=$true)][string]$DomainNetBiosName,
     [Parameter(Mandatory=$true)][string]$DSRMPassword,
     [Parameter(Mandatory=$true)][string]$DomainAdminUsername,
     [Parameter(Mandatory=$true)][string]$DomainAdminPassword
@@ -27,9 +26,6 @@ $Credentials = New-Object System.Management.Automation.PSCredential $DomainAdmin
 $DomainParameters = @{
 
     DomainName                    = $DomainName
-    DomainNetbiosName             = $DomainNetBiosName
-    ForestMode                    = "WinThreshold"
-    DomainMode 			  = "WinThreshold"	    
     InstallDns                    = $true
     CreateDnsDelegation           = $false
     DatabasePath                  = "C:\Windows\NTDS"
