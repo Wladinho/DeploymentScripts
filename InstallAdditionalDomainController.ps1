@@ -14,8 +14,8 @@
 param (
     [Parameter(Mandatory=$true)][string]$DomainName,
     [Parameter(Mandatory=$true)][string]$DomainNetBiosName,
-    [Parameter(Mandatory=$true)][string]$DSRMPassword
-    [Parameter(Mandatory=$true)][string]$DomainAdminUsername
+    [Parameter(Mandatory=$true)][string]$DSRMPassword,
+    [Parameter(Mandatory=$true)][string]$DomainAdminUsername,
     [Parameter(Mandatory=$true)][string]$DomainAdminPassword
 )
 
