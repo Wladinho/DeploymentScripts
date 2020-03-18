@@ -7,7 +7,7 @@
     Script will install all needed prerequisites, before promote destination server to Domain Controller. 
 
 .EXAMPLE
-    InstallAdditionalDomainController.ps1 -DomainName <> -DomainNetBiosName <> -DSRMPassword <>
+    InstallAdditionalDomainController.ps1 -DomainName <> -DSRMPassword <>
 #>
 
     [CmdletBinding()]
@@ -22,7 +22,9 @@ param (
 Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
 
 # Define variables for the new forest
-$Credentials = New-Object System.Management.Automation.PSCredential $DomainAdminUsername, $DomainAdminPassword
+$Password = ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force
+$Credentials = New-Object System.Management.Automation.PSCredential $DomainAdminUsername, $Password
+
 $DomainParameters = @{
 
     DomainName                    = $DomainName
