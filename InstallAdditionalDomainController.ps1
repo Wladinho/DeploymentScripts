@@ -22,7 +22,8 @@ param (
 # Install AD DS feature
 Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
 
-# Define variables for the new forest 
+# Define variables for the new forest
+$Credentials = New-Object System.Management.Automation.PSCredential $DomainAdminUsername, $DomainAdminPassword
 $DomainParameters = @{
 
     DomainName                    = $DomainName
@@ -40,7 +41,7 @@ $DomainParameters = @{
     CriticalReplicationOnly       = $false
     SiteName                      = "Default-First-Site-Name"
     SafeModeAdministratorPassword = ($DSRMPassword | ConvertTo-SecureString -AsPlainText -Force)
-    Credential                    = New-Object System.Management.Automation.PSCredential $DomainAdminUsername, $DomainAdminPassword
+    Credential                    = $Credentials
 
 }
 
