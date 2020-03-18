@@ -7,7 +7,7 @@
     Script will install all needed prerequisites, before promote destination server to Domain Controller. 
 
 .EXAMPLE
-    InstallAdditionalDomainController.ps1 -DomainName <> -DSRMPassword <>
+    InstallAdditionalDomainController.ps1 -DomainName <> -DSRMPassword <> -DomainAdminPassword <> -DomainAdminUsername <>
 #>
 
     [CmdletBinding()]
