@@ -47,7 +47,7 @@ $DomainParameters = @{
     SysvolPath                    = "C:\Windows\SYSVOL"
     NoRebootOnCompletion          = $false
     Force                         = $true
-    SafeModeAdministratorPassword = $DSRMPassword
+    SafeModeAdministratorPassword = ($DSRMPassword | ConvertTo-SecureString -AsPlainText -Force)
 
 }
 
