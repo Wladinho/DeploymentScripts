@@ -27,7 +27,7 @@
 param (
     [Parameter(Mandatory=$true)][string]$DomainName,
     [Parameter(Mandatory=$true)][string]$DomainNetBiosName,
-    [Parameter(Mandatory=$true)][SecureString]$DSRMPassword
+    [Parameter(Mandatory=$true)][String]$DSRMPassword
 )
 
 # Install AD DS feature
