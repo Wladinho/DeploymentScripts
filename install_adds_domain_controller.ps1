@@ -9,7 +9,7 @@
 .EXAMPLE
     install_adds_domain_controller.ps1 -DomainName "Contoso.com" -DSRMPassword "Pa$$w0rd1234" -DomainAdminPassword "Pa$$w0rd" -DomainAdminUsername "contoso\administrator"
 
-    .NOTES
+.NOTES
     File Name : install_adds_domain_controller.ps1
     Version   : 1.0
     Author    : Vladimir Stefanovic <vladimir@superadmins.com> 
