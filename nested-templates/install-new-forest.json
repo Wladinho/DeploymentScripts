@@ -8,6 +8,12 @@
         "subnetName": {
             "type": "string"
         },
+        "addressSpace": {
+            "type": "string"
+        },
+        "subnetIpRange": {
+            "type": "string"
+        },
         "virtualMachineName": {
             "type": "string"
         },
@@ -44,6 +50,28 @@
     },
     "variables": {},
     "resources": [
+        {
+            "name": "[parameters('virtualNetworkName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2019-11-01",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('addressSpace')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnetIpRange')]"
+                        }
+                    }
+                ]
+            }
+        },
         {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-04-01",
