@@ -20,7 +20,7 @@
         },
         "pdcIpAddress": {
             "type": "string",
-            "defaultValue": "10.10.1.4/24"
+            "defaultValue": "10.10.1.4"
         },
         "pdcName": {
             "type": "string",
@@ -127,7 +127,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "dependsOn": [
-                "[concat('Microsoft.Resources/deployments', '/createVirtualNetwork')]"
+                "[resourceId('Microsoft.Resources/deployments','createVirtualNetwork')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -141,6 +141,12 @@
                     },
                     "subnetName": {
                         "value": "[parameters('subnetName')]"
+                    },
+                    "addressSpace": {
+                        "value": "[parameters('addressSpace')]"
+                    },
+                    "subnetIpRange": {
+                        "value": "[parameters('subnetIpRange')]"
                     },
                     "virtualMachineName": {
                         "value": "[parameters('pdcName')]"
