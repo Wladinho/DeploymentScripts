@@ -84,7 +84,7 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', concat(parameters('virtualNetworkName'), '/', parameters('subnetName')))]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
