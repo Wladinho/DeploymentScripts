@@ -52,6 +52,9 @@
             "apiVersion": "2019-11-01",
             "location": "[resourceGroup().location]",
             "tags": {},
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+            ],
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
