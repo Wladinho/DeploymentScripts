@@ -76,8 +76,7 @@
             "name": "[concat(parameters('virtualMachineName'), '-nic')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', concat(parameters('virtualMachineName'), '-pip'))]",
-                "[concat('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
+                "[concat('Microsoft.Network/publicIpAddresses/', concat(parameters('virtualMachineName'), '-pip'))]"
             ],
             "properties": {
                 "ipConfigurations": [
