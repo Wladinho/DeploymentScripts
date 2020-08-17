@@ -17,6 +17,7 @@
 
     --- CHANGELOG ---
     
+    v1.1 - 2020-08-17 / Fixed credential variable
     v1.0 - 2020-03-18 / Initial version
 #>
 
