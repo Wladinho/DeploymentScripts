@@ -42,18 +42,7 @@
             "type": "secureString"
         }       
     },
-    "variables": {
-        "vnetId": "[concat(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName')))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "networkInterfaceName": "[concat(parameters('virtualMachineName'),'-nic')]",
-        "publicIpAddressName": "[concat(parameters('virtualMachineName'),'-pip')]",
-        "publicIpAddressId": {
-            "id": "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
-        },
-        "availabilitySetId": {
-            "id": "[resourceId('Microsoft.Compute/availabilitySets/', parameters('availabilitySetName'))]"
-        }
-    },
+    "variables": {},
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts",
@@ -72,7 +61,7 @@
         {
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2019-11-01",
-            "name": "[variables('publicIpAddressName')]",
+            "name": "[concat(parameters('virtualMachineName'), '-pip')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIpAllocationMethod": "Static"
@@ -84,10 +73,10 @@
         {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-11-01",
-            "name": "[variables('networkInterfaceName')]",
+            "name": "[concat(parameters('virtualMachineName'), '-nic')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', concat(parameters('virtualMachineName'), '-pip'))]",
                 "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
             ],
             "properties": {
@@ -96,10 +85,12 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[variables('subnetRef')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
-                            "publicIpAddress": "[variables('publicIpAddressId')]"
+                            "publicIpAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIpAddresses/', concat(parameters('virtualMachineName'), '-pip'))]"
+                            }
                         }
                     }
                 ]
@@ -124,7 +115,7 @@
             "name": "[parameters('virtualMachineName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', concat(parameters('virtualMachineName'), '-nic'))]",
                 "[concat('Microsoft.Compute/availabilitySets/', parameters('availabilitySetName'))]",
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
             ],
@@ -150,7 +141,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-pip'))]"
                         }
                     ]
                 },
@@ -165,7 +156,9 @@
                         "storageUri": "[concat('https://', parameters('diagnosticsStorageAccountName'), '.blob.core.windows.net/')]"
                     }
                 },
-                "availabilitySet": "[variables('availabilitySetId')]"
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
+                }
             },
             "resources": [
                 {
