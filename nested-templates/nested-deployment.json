@@ -92,11 +92,11 @@
             "type": "securestring",
             "defaultValue": ""
         },
-        "adminUsername": {
+        "domainAdminUsername": {
             "type": "string",
             "defaultValue": "vladimir"
         },
-        "adminPassword": {
+        "domainAdminPassword": {
             "type": "secureString",
             "defaultValue": "Pa$$w0rd1234"
         }
@@ -181,10 +181,10 @@
                         "value": "[parameters('artifactsLocationSasToken')]"
                     },
                     "adminUsername": {
-                        "value": "[parameters('adminUsername')]"
+                        "value": "[parameters('domainAdminUsername')]"
                     },
                     "adminPassword": {
-                        "value": "[parameters('adminPassword')]"
+                        "value": "[parameters('domainAdminPassword')]"
                     }
                 }
             }
@@ -217,6 +217,62 @@
                     },
                     "pdcIpAddress": {
                         "value": "[parameters('pdcIpAddress')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "deployAdditionalDomainController",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','updateVirtualNetworkDNS')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/wladinho31/deployment-scripts/master/nested-templates/install-new-forest.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "virtualNetworkName": {
+                        "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetName')]"
+                    },
+                    "virtualMachineName": {
+                        "value": "[parameters('sdcName')]"
+                    },
+                    "virtualMachineSize": {
+                        "value": "[parameters('dcVmSize')]"
+                    },
+                    "virtualMachineIpAddress": {
+                        "value": "[parameters('sdcIpAddress')]"
+                    },
+                    "availabilitySetName": {
+                        "value": "[parameters('availabilitySetName')]"
+                    },
+                    "windowsServerSku": {
+                        "value": "[parameters('windowsServerSku')]"
+                    },
+                    "diagnosticsStorageAccountName": {
+                        "value": "[parameters('diagnosticsStorageAccountName')]"
+                    },
+                    "domainName": {
+                        "value": "[parameters('domainName')]"
+                    },
+                    "artifactsLocation": {
+                        "value": "[parameters('artifactsLocation')]"
+                    },
+                    "artifactsLocationSasToken": {
+                        "value": "[parameters('artifactsLocationSasToken')]"
+                    },
+                    "adminUsername": {
+                        "value": "[parameters('domainAdminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('domainAdminPassword')]"
                     }
                 }
             }
