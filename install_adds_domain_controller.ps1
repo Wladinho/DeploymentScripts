@@ -33,7 +33,7 @@ Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManageme
 
 # Define variables and parameters for the new a domain controller
 $Password    = ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force
-$Credentials = New-Object System.Management.Automation.PSCredential $DomainAdminUsername, $Password
+$Credentials = New-Object System.Management.Automation.PSCredential "$DomainName\$DomainAdminUsername", $Password
 
 $DomainParameters = @{
 
@@ -53,6 +53,6 @@ $DomainParameters = @{
 
 }
 
-# Install new forest
+# Install an additional domain controller
 Import-Module ADDSDeployment
 Install-ADDSDomainController @DomainParameters
