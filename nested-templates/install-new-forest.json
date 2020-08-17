@@ -42,7 +42,10 @@
             "type": "secureString"
         }       
     },
-    "variables": {},
+    "variables": {
+        "vnetId": "[concat(resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName')))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+    },
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts",
@@ -84,7 +87,7 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), '/', parameters('subnetName'))]"
+                                "id": "[variables('subnetRef')]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
