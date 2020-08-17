@@ -26,7 +26,15 @@
             "type": "string",
             "defaultValue": "dc01"
         },
-        "pdcVmSize": {
+        "sdcIpAddress": {
+            "type": "string",
+            "defaultValue": "10.10.1.5"
+        },
+        "sdcName": {
+            "type": "string",
+            "defaultValue": "dc02"
+        },
+        "dcVmSize": {
             "type": "string",
             "defaultValue": "Standard_B4ms",
             "allowedValues": [
@@ -142,17 +150,14 @@
                     "subnetName": {
                         "value": "[parameters('subnetName')]"
                     },
-                    "addressSpace": {
-                        "value": "[parameters('addressSpace')]"
-                    },
-                    "subnetIpRange": {
-                        "value": "[parameters('subnetIpRange')]"
-                    },
                     "virtualMachineName": {
                         "value": "[parameters('pdcName')]"
                     },
                     "virtualMachineSize": {
-                        "value": "[parameters('pdcVmSize')]"
+                        "value": "[parameters('dcVmSize')]"
+                    },
+                    "virtualMachineIpAddress": {
+                        "value": "[parameters('pdcIpAddress')]"
                     },
                     "availabilitySetName": {
                         "value": "[parameters('availabilitySetName')]"

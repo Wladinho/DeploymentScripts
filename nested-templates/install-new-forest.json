@@ -14,6 +14,9 @@
         "virtualMachineSize": {
             "type": "string"
         },
+        "virtualMachineIpAddress": {
+            "type": "string"
+        },
         "availabilitySetName": {
             "type": "string"
         },
@@ -97,7 +100,9 @@
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
                             },
-                            "privateIPAllocationMethod": "Dynamic",
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddressVersion": "IPv4",
+                            "privateIPAddress": "[parameters('virtualMachineIpAddress')]",
                             "publicIpAddress": "[variables('publicIpAddressId')]"
                         }
                     }
