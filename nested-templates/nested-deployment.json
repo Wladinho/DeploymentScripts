@@ -3,7 +3,86 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "virtualNetworkName": {
+            "type": "string",
+            "defaultValue": "demo-vnet"
+        },
+        "subnetName": {
+            "type": "string",
+            "defaultValue": "default-subnet"
+        },
+        "addressSpace": {
+            "type": "string",
+            "defaultValue": "10.10.0.0/16"
+        },
+        "subnetIpRange": {
+            "type": "string",
+            "defaultValue": "10.10.1.0/24"
+        },
+        "pdcIpAddress": {
+            "type": "string",
+            "defaultValue": "10.10.1.4/24"
+        },
+        "pdcName": {
             "type": "string"
+        },
+        "pdcVmSize": {
+            "type": "string",
+            "defaultValue": "Standard_B2s",
+            "allowedValues": [
+                "Standard_B2s",
+                "Standard_B2ms",
+                "Standard_B4ms",
+                "Standard_D2s_v3",
+                "Standard_D4s_v3"
+            ]
+        },
+        "availabilitySetName": {
+            "type": "string"
+        },
+        "windowsServerSku": {
+            "type": "string",
+            "defaultValue": "2016-Datacenter-smalldisk",
+            "allowedValues": [
+                "2012-R2-Datacenter",
+                "2012-R2-Datacenter-smalldisk",
+                "2016-Datacenter",
+                "2016-Datacenter-smalldisk",
+                "2019-Datacenter",
+                "2019-Datacenter-smalldisk"
+            ]
+        },
+        "diagnosticsStorageAccountName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "metadata": {
+                "description": "Define the name of the storage account for boot diagnostics. If the storage account doesn't exist, it will be created. The name must be unique across all existing storage account names in Azure. It must be 3 to 24 characters long and can contain only lowercase letters and numbers."
+            }
+        },
+        "domainName": {
+           "type": "string",
+           "metadata": {
+               "description": "Define the domain name in the format 'contoso.com'."
+           } 
+        },
+        "domainNetbiosName": {
+            "type": "string",
+            "metadata": {
+                "description": "Define the domain name in NetBios format, up to 15 characters. (i.e. 'CONTOSO')"
+            }
+        },
+        "artifactsLocation": {
+            "type": "string",
+            "defaultValue": "https://raw.githubusercontent.com/wladinho31/deployment-scripts/master/"
+        },
+        "artifactsLocationSasToken": {
+            "type": "securestring"
+        },
+        "adminUsername": {
+            "type": "string"
+        },
+        "adminPassword": {
+            "type": "secureString"
         }
     },
     "functions": [],
@@ -22,16 +101,25 @@
                 "parameters": {
                     "virtualNetworkName": {
                         "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetName')]"
+                    },
+                    "addressSpace": {
+                        "value": "[parameters('addressSpace')]"
+                    },
+                    "subnetIpRange": {
+                        "value": "[parameters('subnetIpRange')]"
                     }
                 }
             }
         },
         {
-            "name": "updateVirtualNetworkDNS",
+            "name": "deployNewForest",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "dependsOn": [
-                "[concat('Microsoft.Resources/deployments', 'createVirtualNetwork')]"
+                "[concat('Microsoft.Resources/deployments', '/createVirtualNetwork')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -42,6 +130,74 @@
                 "parameters": {
                     "virtualNetworkName": {
                         "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetName')]"
+                    },
+                    "virtualMachineName": {
+                        "value": "[parameters('pdcName')]"
+                    },
+                    "virtualMachineSize": {
+                        "value": "[parameters('pdcVmSize')]"
+                    },
+                    "availabilitySetName": {
+                        "value": "[parameters('availabilitySetName')]"
+                    },
+                    "windowsServerSku": {
+                        "value": "[parameters('windowsServerSku')]"
+                    },
+                    "diagnosticsStorageAccountName": {
+                        "value": "[parameters('diagnosticsStorageAccountName')]"
+                    },
+                    "domainName": {
+                        "value": "[parameters('domainName')]"
+                    },
+                    "domainNetbiosName": {
+                        "value": "[parameters('domainNetbiosName')]"
+                    },
+                    "artifactsLocation": {
+                        "value": "[parameters('artifactsLocation')]"
+                    },
+                    "artifactsLocationSasToken": {
+                        "value": "[parameters('artifactsLocationSasToken')]"
+                    },
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateVirtualNetworkDNS",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments', '/deployNewForest')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/wladinho31/deployment-scripts/master/nested-templates/update-vnet-dns.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "virtualNetworkName": {
+                        "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetName')]"
+                    },
+                    "addressSpace": {
+                        "value": "[parameters('addressSpace')]"
+                    },
+                    "subnetIpRange": {
+                        "value": "[parameters('subnetIpRange')]"
+                    },
+                    "pdcIpAddress": {
+                        "value": "[parameters('pdcIpAddress')]"
                     }
                 }
             }

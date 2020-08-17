@@ -5,6 +5,22 @@
         "virtualNetworkName": {
             "type": "string",
             "defaultValue": "demo-vnet"
+        },
+        "subnetName": {
+            "type": "string",
+            "defaultValue": "default-subnet"
+        },
+        "addressSpace": {
+            "type": "string",
+            "defaultValue": "10.10.0.0/16"
+        },
+        "subnetIpRange": {
+            "type": "string",
+            "defaultValue": "10.10.1.0/24"
+        },
+        "pdcIpAddress": {
+            "type": "string",
+            "defaultValue": "10.10.1.4/24"
         }
     },
     "functions": [],
@@ -19,21 +35,20 @@
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.123.0.0/16"
+                        "[parameters('addressSpace')]"
                     ]
                 },
                 "subnets": [
                     {
-                        "name": "default-subnet",
+                        "name": "[parameters('subnetName')]",
                         "properties": {
-                            "addressPrefix": "10.123.1.0/24"
+                            "addressPrefix": "[parameters('subnetIpRange')]"
                         }
                     }
                 ],
                 "dhcpOptions": {
                     "dnsServers": [
-                        "10.123.1.4",
-                        "10.123.1.5"
+                        "[parameters('pdcIpAddress')]"
                     ]
                 }
             }
