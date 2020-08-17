@@ -3,24 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "virtualNetworkName": {
-            "type": "string",
-            "defaultValue": "demo-vnet"
+            "type": "string"
         },
         "subnetName": {
-            "type": "string",
-            "defaultValue": "default-subnet"
+            "type": "string"
         },
         "addressSpace": {
-            "type": "string",
-            "defaultValue": "10.10.0.0/16"
+            "type": "string"
         },
         "subnetIpRange": {
-            "type": "string",
-            "defaultValue": "10.10.1.0/24"
+            "type": "string"
         },
         "pdcIpAddress": {
-            "type": "string",
-            "defaultValue": "10.10.1.4/24"
+            "type": "string"
         }
     },
     "functions": [],

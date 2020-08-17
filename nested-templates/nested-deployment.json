@@ -76,7 +76,8 @@
             "defaultValue": "https://raw.githubusercontent.com/wladinho31/deployment-scripts/master/"
         },
         "artifactsLocationSasToken": {
-            "type": "securestring"
+            "type": "securestring",
+            "defaultValue": ""
         },
         "adminUsername": {
             "type": "string"
@@ -124,7 +125,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat('artifactsLocation', '/linkedTemplates/linkedTemplate.json', 'artifactsLocationSasToken')]",
+                    "uri": "https://raw.githubusercontent.com/wladinho31/deployment-scripts/master/nested-templates/install-new-forest.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
