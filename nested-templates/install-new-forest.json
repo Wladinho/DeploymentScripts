@@ -43,7 +43,7 @@
         }       
     },
     "variables": {
-        "vnetId": "[concat(resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName')))]",
+        "vnetId": "[concat(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName')))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
         "networkInterfaceName": "[concat(parameters('virtualMachineName'),'-nic')]",
         "publicIpAddressName": "[concat(parameters('virtualMachineName'),'-pip')]",

@@ -23,11 +23,12 @@
             "defaultValue": "10.10.1.4/24"
         },
         "pdcName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "dc01"
         },
         "pdcVmSize": {
             "type": "string",
-            "defaultValue": "Standard_B2s",
+            "defaultValue": "Standard_B4ms",
             "allowedValues": [
                 "Standard_B2s",
                 "Standard_B2ms",
@@ -37,7 +38,8 @@
             ]
         },
         "availabilitySetName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "dc-avset"
         },
         "windowsServerSku": {
             "type": "string",
@@ -57,19 +59,22 @@
             "maxLength": 24,
             "metadata": {
                 "description": "Define the name of the storage account for boot diagnostics. If the storage account doesn't exist, it will be created. The name must be unique across all existing storage account names in Azure. It must be 3 to 24 characters long and can contain only lowercase letters and numbers."
-            }
+            },
+            "defaultValue": "diagmiagtrtmrt"
         },
         "domainName": {
            "type": "string",
            "metadata": {
                "description": "Define the domain name in the format 'contoso.com'."
-           } 
+           },
+           "defaultValue": "contoso.com"
         },
         "domainNetbiosName": {
             "type": "string",
             "metadata": {
                 "description": "Define the domain name in NetBios format, up to 15 characters. (i.e. 'CONTOSO')"
-            }
+            },
+            "defaultValue": "CONTOSO"
         },
         "artifactsLocation": {
             "type": "string",
@@ -80,10 +85,12 @@
             "defaultValue": ""
         },
         "adminUsername": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "vladimir"
         },
         "adminPassword": {
-            "type": "secureString"
+            "type": "secureString",
+            "defaultValue": "Pa$$w0rd1234"
         }
     },
     "functions": [],
