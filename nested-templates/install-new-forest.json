@@ -44,7 +44,15 @@
     },
     "variables": {
         "vnetId": "[concat(resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName')))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "networkInterfaceName": "[concat(parameters('virtualMachineName'),'-nic')]",
+        "publicIpAddressName": "[concat(parameters('virtualMachineName'),'-pip')]",
+        "publicIpAddressId": {
+            "id": "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
+        },
+        "availabilitySetId": {
+            "id": "[resourceId('Microsoft.Compute/availabilitySets/', parameters('availabilitySetName'))]"
+        }
     },
     "resources": [
         {
@@ -64,7 +72,7 @@
         {
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2019-11-01",
-            "name": "[concat(parameters('virtualMachineName'), '-pip')]",
+            "name": "[variables('publicIpAddressName')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIpAllocationMethod": "Static"
@@ -76,10 +84,10 @@
         {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-11-01",
-            "name": "[concat(parameters('virtualMachineName'), '-nic')]",
+            "name": "[variables('networkInterfaceName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', concat(parameters('virtualMachineName'), '-pip'))]"
+                "[concat('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -90,9 +98,7 @@
                                 "id": "[variables('subnetRef')]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
-                            "publicIpAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIpAddresses/', concat(parameters('virtualMachineName'), '-pip'))]"
-                            }
+                            "publicIpAddress": "[variables('publicIpAddressId')]"
                         }
                     }
                 ]
@@ -117,7 +123,7 @@
             "name": "[parameters('virtualMachineName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', concat(parameters('virtualMachineName'), '-nic'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]",
                 "[concat('Microsoft.Compute/availabilitySets/', parameters('availabilitySetName'))]",
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
             ],
@@ -143,7 +149,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-nic'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
                         }
                     ]
                 },
