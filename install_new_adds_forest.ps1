@@ -23,7 +23,7 @@
     v1.0 - 2020-03-10 / Initial version
 #>
 
-[CmdletBinding()]
+    [CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)][string]$DomainName,
     [Parameter(Mandatory=$true)][string]$DomainNetBiosName,
