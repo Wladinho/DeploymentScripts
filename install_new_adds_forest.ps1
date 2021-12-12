@@ -25,9 +25,9 @@
 
     [CmdletBinding()]
 param (
-    [Parameter(Mandatory=$true)][string]$DomainName,
-    [Parameter(Mandatory=$true)][string]$DomainNetBiosName,
-    [Parameter(Mandatory=$true)][String]$DSRMPassword
+    [Parameter(Mandatory)][string]$DomainName,
+    [Parameter(Mandatory)][string]$DomainNetBiosName,
+    [Parameter(Mandatory)][string]$DSRMPassword
 )
 
 # Install AD DS feature
