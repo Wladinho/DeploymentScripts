@@ -1,6 +1,7 @@
 ﻿<#
 .SYNOPSIS
     Parameterized script for installing additional Domain Controller into existing AD DS forest.
+    This is intended to use in the demo environment.
      
 .DESCRIPTION
     Custom script with parameters for installing additional Domain Controller into existing AD DS forest.
